@@ -17,18 +17,17 @@ Khi chạy `npm run dev`, Vite phục vụ luôn API `/api/kv/*` (đọc/ghi `da
 ## Chạy như production (không cần Docker)
 ```
 npm run build      # tạo thư mục dist/
-npm start          # server Node phục vụ dist/ + API, mặc định cổng 3000
+npm start          # server Node phục vụ dist/ + API, mặc định cổng 3100
 ```
 
 ## Deploy bằng Docker
 ```
-docker build -t book .
-docker run -d -p 3000:3000 -v book-data:/app/data book
+docker compose up -d --build
 ```
+- App chạy ở **cổng 3100** → http://SERVER_IP:3100
 - Key được đọc từ `.env` lúc build (hoặc truyền `--build-arg VITE_GEMINI_API_KEY=xxx`).
-- `-v book-data:/app/data` gắn volume để **giữ dữ liệu sách** qua các lần rebuild container.
-- Đổi cổng: `-e PORT=8080 -p 8080:8080`.
-- Đổi vị trí file dữ liệu: `-e DATA_FILE=/app/data/books.json`.
+- Dữ liệu giữ trong volume `book-data` → **không mất** khi rebuild.
+- Đổi cổng nếu 3100 bị trùng: thêm `APP_PORT=3200` vào `.env` rồi `docker compose up -d`.
 
 ## Ghi chú bảo mật
 - `.env` và `data/` đã bị `.gitignore` — **không** đẩy lên GitHub.

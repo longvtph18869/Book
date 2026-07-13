@@ -16,7 +16,7 @@ RUN npm run build
 FROM node:20-alpine
 WORKDIR /app
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=3100
 # Dữ liệu lưu ở /app/data (mount volume để giữ sau khi rebuild container)
 ENV DATA_FILE=/app/data/books.json
 
@@ -27,5 +27,5 @@ COPY --from=build /app/dist ./dist
 # Thư mục dữ liệu (mount volume vào đây để giữ dữ liệu). Server tự tạo file khi ghi.
 RUN mkdir -p /app/data
 
-EXPOSE 3000
+EXPOSE 3100
 CMD ["node", "server/index.js"]

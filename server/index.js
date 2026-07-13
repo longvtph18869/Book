@@ -9,7 +9,7 @@ import { readFile } from "node:fs/promises";
 import { extname, join, normalize, resolve } from "node:path";
 import { createKvStore, kvMiddleware, DEFAULT_DATA_FILE } from "./kvStore.js";
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT) || 3100;
 const DIST_DIR = resolve(process.cwd(), "dist");
 const DATA_FILE = process.env.DATA_FILE
   ? resolve(process.env.DATA_FILE)
