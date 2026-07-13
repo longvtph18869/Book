@@ -432,7 +432,17 @@ function SetupView({ onCreate, onCancel }) {
               <span>Số chương</span>
               <input
                 type="number" min={3} max={30} value={numChapters}
-                onChange={(e) => setNumChapters(Math.max(3, Math.min(30, Number(e.target.value) || 3)))}
+                onChange={(e) => {
+                  // Cho phép gõ tự do (kể cả rỗng) khi đang nhập, chỉ chặn vượt 30.
+                  const v = e.target.value;
+                  if (v === "") { setNumChapters(""); return; }
+                  setNumChapters(Math.min(30, Number(v)));
+                }}
+                onBlur={(e) => {
+                  // Rời ô mới kẹp về khoảng hợp lệ [3–30]; bỏ trống thì về mặc định 10.
+                  const n = Number(e.target.value);
+                  setNumChapters(n ? Math.max(3, Math.min(30, n)) : 10);
+                }}
               />
             </label>
           </div>
@@ -446,7 +456,7 @@ function SetupView({ onCreate, onCancel }) {
             </div>
           </div>
 
-          <Btn kind="primary" disabled={!premise.trim()} onClick={() => onCreate({ genre, title: title.trim(), premise: premise.trim(), audience: audience.trim(), tone, numChapters })}>
+          <Btn kind="primary" disabled={!premise.trim()} onClick={() => onCreate({ genre, title: title.trim(), premise: premise.trim(), audience: audience.trim(), tone, numChapters: Math.max(3, Math.min(30, Number(numChapters) || 10)) })}>
             <Sparkles size={16} /> Tạo sách & sang bàn viết
           </Btn>
         </>
