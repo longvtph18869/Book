@@ -1,0 +1,18 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        # Đọc từ file .env cùng thư mục (KHÔNG commit lên git)
+        VITE_GEMINI_API_KEY: ${VITE_GEMINI_API_KEY}
+        VITE_GEMINI_MODEL: ${VITE_GEMINI_MODEL:-gemini-3.5-flash}
+    ports:
+      - "3000:3000"
+    environment:
+      - DATA_FILE=/app/data/books.json
+    volumes:
+      - book-data:/app/data     # giữ dữ liệu sách qua các lần rebuild
+    restart: unless-stopped
+
+volumes:
+  book-data:
